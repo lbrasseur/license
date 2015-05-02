@@ -1,0 +1,19 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+version = '1.0-SNAPSHOT'
+group = 'ar.com.oxen.license'
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+	compile "javax.inject:javax.inject:1"
+}
