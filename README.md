@@ -1,0 +1,2 @@
+# license
+Licence management library
