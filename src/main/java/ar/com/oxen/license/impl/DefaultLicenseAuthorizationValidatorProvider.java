@@ -1,14 +1,16 @@
 package ar.com.oxen.license.impl;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import ar.com.oxen.commons.converter.impl.SerializableToBytesConverter;
 import ar.com.oxen.license.api.LicenseAuthorizationValidator;
 import ar.com.oxen.license.api.PublicKeyProvider;
 import ar.com.oxen.license.api.SignatureProvider;
+import ar.com.oxen.license.impl.function.SerializableToBytesFunction;
 
 /**
  * JSR330 provider for creating a default {@link LicenseAuthorizationValidator}
@@ -19,22 +21,20 @@ import ar.com.oxen.license.api.SignatureProvider;
  */
 public class DefaultLicenseAuthorizationValidatorProvider<I extends Serializable>
 		implements Provider<LicenseAuthorizationValidator<I>> {
-	private SignatureProvider signatureProvider;
-	private PublicKeyProvider publicKeyProvider;
+	private final SignatureProvider signatureProvider;
+	private final PublicKeyProvider publicKeyProvider;
 
 	@Inject
 	public DefaultLicenseAuthorizationValidatorProvider(
 			SignatureProvider signatureProvider,
 			PublicKeyProvider publicKeyProvider) {
-		super();
-		this.signatureProvider = signatureProvider;
-		this.publicKeyProvider = publicKeyProvider;
+		this.signatureProvider = requireNonNull(signatureProvider);
+		this.publicKeyProvider = requireNonNull(publicKeyProvider);
 	}
 
 	@Override
 	public LicenseAuthorizationValidator<I> get() {
-		return new SignatureLicenseAuthorizationValidator<I>(
-				this.signatureProvider, this.publicKeyProvider,
-				new SerializableToBytesConverter<I>());
+		return new SignatureLicenseAuthorizationValidator<I>(signatureProvider,
+				publicKeyProvider, new SerializableToBytesFunction<I>());
 	}
 }

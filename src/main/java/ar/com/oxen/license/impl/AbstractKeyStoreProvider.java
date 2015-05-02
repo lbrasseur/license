@@ -1,5 +1,7 @@
 package ar.com.oxen.license.impl;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -11,20 +13,19 @@ import ar.com.oxen.license.api.KeyStoreProvider;
 import ar.com.oxen.license.api.LicenceException;
 
 public abstract class AbstractKeyStoreProvider implements KeyStoreProvider {
-	private String keyStorePassword;
+	private final String keyStorePassword;
 
 	public AbstractKeyStoreProvider(String keyStorePassword) {
-		super();
-		this.keyStorePassword = keyStorePassword;
+		this.keyStorePassword = requireNonNull(keyStorePassword);
 	}
 
 	@Override
 	public KeyStore getKeyStore() {
 		try {
 			KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-			InputStream keyStoreInputStream = this.openKeyStoreInputStream();
+			InputStream keyStoreInputStream = openKeyStoreInputStream();
 
-			ks.load(keyStoreInputStream, this.keyStorePassword.toCharArray());
+			ks.load(keyStoreInputStream, keyStorePassword.toCharArray());
 
 			keyStoreInputStream.close();
 

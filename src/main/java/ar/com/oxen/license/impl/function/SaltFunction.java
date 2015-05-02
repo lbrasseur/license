@@ -1,16 +1,18 @@
-package ar.com.oxen.commons.converter.impl;
+package ar.com.oxen.license.impl.function;
+
+import static java.util.Objects.requireNonNull;
 
 import java.security.SecureRandom;
-
-import ar.com.oxen.commons.converter.api.Converter;
+import java.util.function.Function;
 
 /**
  * Byte array to byte array converter that applies a random salt in order to
  * obfuscate the message.
  */
-public class SaltConverter implements Converter<byte[], byte[]> {
+public class SaltFunction implements Function<byte[], byte[]> {
 	@Override
-	public byte[] convert(byte[] source) {
+	public byte[] apply(byte[] source) {
+		requireNonNull(source);
 		byte salt = new SecureRandom().generateSeed(1)[0];
 		byte[] salted = new byte[source.length + 1];
 		salted[0] = salt;

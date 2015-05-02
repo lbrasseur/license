@@ -1,5 +1,7 @@
 package ar.com.oxen.license.impl;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -13,13 +15,12 @@ import ar.com.oxen.license.api.License;
  */
 public class SimpleLicense<I extends Serializable> implements License<I> {
 	private static final long serialVersionUID = 2905278555167754416L;
-	private I info;
-	private byte[] authorization;
+	private final I info;
+	private final byte[] authorization;
 
 	public SimpleLicense(I info, byte[] authorization) {
-		super();
-		this.info = info;
-		this.authorization = authorization;
+		this.info = requireNonNull(info);
+		this.authorization = requireNonNull(authorization);
 	}
 
 	@Override

@@ -14,7 +14,7 @@
 // Please contact the author if you need another license.
 // This module is provided "as is", without warranties of any kind.
 
-package ar.com.oxen.commons.coder;
+package ar.com.oxen.license.impl.function;
 
 /**
 * A Base64 encoder/decoder.
@@ -27,7 +27,7 @@ package ar.com.oxen.commons.coder;
 * Author: Christian d'Heureuse, Inventec Informatik AG, Zurich, Switzerland<br>
 * Multi-licensed: EPL / LGPL / GPL / AL / BSD / MIT.
 */
-public class Base64Coder {
+class Base64Coder {
 
 // The line separator string of the operating system.
 private static final String systemLineSeparator = System.getProperty("line.separator");

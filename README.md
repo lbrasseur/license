@@ -57,9 +57,9 @@ public class TestModule extends AbstractModule {
 	protected void configure() {
 		/* Hardware identification configuration - SHA-512 over MAC address in this case */
 		bind(HardwareIdProvider.class).toInstance(
-				new ConverterHardwareIdProvider(
+				new FunctionHardwareIdProvider(
 						new MacAddressHardwareIdProvider(),
-						new DigestConverter("SHA-512")));
+						new DigestFunction("SHA-512")));
 		
 		/* Digital signature configuration */
 		bind(SignatureProvider.class).toInstance(

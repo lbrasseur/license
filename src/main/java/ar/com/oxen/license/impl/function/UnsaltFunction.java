@@ -1,14 +1,17 @@
-package ar.com.oxen.commons.converter.impl;
+package ar.com.oxen.license.impl.function;
 
-import ar.com.oxen.commons.converter.api.Converter;
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Function;
 
 /**
  * Byte array to byte array converter that removes a salt form an obfuscated
  * message.
  */
-public class UnsaltConverter implements Converter<byte[], byte[]> {
+public class UnsaltFunction implements Function<byte[], byte[]> {
 	@Override
-	public byte[] convert(byte[] source) {
+	public byte[] apply(byte[] source) {
+		requireNonNull(source);
 		byte salt = source[0];
 		byte[] unsalted = new byte[source.length - 1];
 		for (int n = 0; n < unsalted.length; n++) {

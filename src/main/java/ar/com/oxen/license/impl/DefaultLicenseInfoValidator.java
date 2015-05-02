@@ -1,5 +1,7 @@
 package ar.com.oxen.license.impl;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 import java.util.Date;
 
@@ -15,22 +17,22 @@ import ar.com.oxen.license.api.LicenseInfoValidator;
  */
 public class DefaultLicenseInfoValidator implements
 		LicenseInfoValidator<DefaultLicenseInfo> {
-	private HardwareIdProvider hardwareIdProvider;
+	private final HardwareIdProvider hardwareIdProvider;
 
 	@Inject
 	public DefaultLicenseInfoValidator(HardwareIdProvider hardwareIdProvider) {
-		super();
-		this.hardwareIdProvider = hardwareIdProvider;
+		this.hardwareIdProvider = requireNonNull(hardwareIdProvider);
 	}
 
 	@Override
 	public boolean validate(DefaultLicenseInfo licenseInfo) {
+		requireNonNull(licenseInfo);
 		boolean dateOk = licenseInfo.getExpirationDate() == null
 				|| licenseInfo.getExpirationDate().after(new Date());
 
 		boolean hardwareOk = licenseInfo.getHardwareId() == null
 				|| Arrays.equals(licenseInfo.getHardwareId(),
-						this.hardwareIdProvider.getHardwareId());
+						hardwareIdProvider.getHardwareId());
 
 		return dateOk && hardwareOk;
 	}

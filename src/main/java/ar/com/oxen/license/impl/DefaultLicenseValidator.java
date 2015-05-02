@@ -1,5 +1,7 @@
 package ar.com.oxen.license.impl;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 
 import javax.inject.Inject;
@@ -19,21 +21,21 @@ import ar.com.oxen.license.api.LicenseValidator;
  */
 public class DefaultLicenseValidator<I extends Serializable> implements
 		LicenseValidator<I> {
-	private LicenseAuthorizationValidator<I> licenseAuthorizationValidator;
-	private LicenseInfoValidator<I> licenseInfoValidator;
+	private final LicenseAuthorizationValidator<I> licenseAuthorizationValidator;
+	private final LicenseInfoValidator<I> licenseInfoValidator;
 
 	@Inject
 	public DefaultLicenseValidator(
 			LicenseAuthorizationValidator<I> licenseAuthorizationValidator,
 			LicenseInfoValidator<I> licenseInfoValidator) {
-		super();
-		this.licenseAuthorizationValidator = licenseAuthorizationValidator;
-		this.licenseInfoValidator = licenseInfoValidator;
+		this.licenseAuthorizationValidator = requireNonNull(licenseAuthorizationValidator);
+		this.licenseInfoValidator = requireNonNull(licenseInfoValidator);
 	}
 
 	@Override
 	public boolean validate(License<I> license) {
-		return this.licenseAuthorizationValidator.validate(license)
-				&& this.licenseInfoValidator.validate(license.getInfo());
+		requireNonNull(license);
+		return licenseAuthorizationValidator.validate(license)
+				&& licenseInfoValidator.validate(license.getInfo());
 	}
 }

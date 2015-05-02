@@ -1,5 +1,7 @@
 package ar.com.oxen.license.impl;
 
+import static java.util.Objects.requireNonNull;
+
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -14,23 +16,22 @@ import ar.com.oxen.license.api.PrivateKeyProvider;
  * Private key provider that reads the key from a {@link KeyStore}.
  */
 public class KeyStorePrivateKeyProvider implements PrivateKeyProvider {
-	private String alias;
-	private String password;
-	private KeyStoreProvider keyStoreProvider;
+	private final String alias;
+	private final String password;
+	private final KeyStoreProvider keyStoreProvider;
 
 	public KeyStorePrivateKeyProvider(String alias, String password,
 			KeyStoreProvider keyStoreProvider) {
-		super();
-		this.alias = alias;
-		this.password = password;
-		this.keyStoreProvider = keyStoreProvider;
+		this.alias = requireNonNull(alias);
+		this.password = requireNonNull(password);
+		this.keyStoreProvider = requireNonNull(keyStoreProvider);
 	}
 
 	@Override
 	public PrivateKey getPrivateKey() {
 		try {
-			return  (PrivateKey) this.keyStoreProvider.getKeyStore().getKey(
-					alias, password.toCharArray());
+			return (PrivateKey) keyStoreProvider.getKeyStore().getKey(alias,
+					password.toCharArray());
 		} catch (UnrecoverableKeyException e) {
 			throw new LicenceException(e);
 		} catch (KeyStoreException e) {

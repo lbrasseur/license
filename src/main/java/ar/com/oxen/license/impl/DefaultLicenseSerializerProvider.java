@@ -1,19 +1,18 @@
 package ar.com.oxen.license.impl;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 import javax.inject.Provider;
 
-import ar.com.oxen.commons.converter.api.Converter;
-import ar.com.oxen.commons.converter.api.ConverterBuilder;
-import ar.com.oxen.commons.converter.impl.Base64ToBytesConverter;
-import ar.com.oxen.commons.converter.impl.BytesToBase64Converter;
-import ar.com.oxen.commons.converter.impl.BytesToSerializableConverter;
-import ar.com.oxen.commons.converter.impl.SaltConverter;
-import ar.com.oxen.commons.converter.impl.SerializableToBytesConverter;
-import ar.com.oxen.commons.converter.impl.UnsaltConverter;
 import ar.com.oxen.license.api.License;
 import ar.com.oxen.license.api.LicenseSerializer;
+import ar.com.oxen.license.impl.function.Base64ToBytesFunction;
+import ar.com.oxen.license.impl.function.BytesToBase64Function;
+import ar.com.oxen.license.impl.function.BytesToSerializableFunction;
+import ar.com.oxen.license.impl.function.SaltFunction;
+import ar.com.oxen.license.impl.function.SerializableToBytesFunction;
+import ar.com.oxen.license.impl.function.UnsaltFunction;
 
 /**
  * JSR330 provider for creating a default {@link LicenseSerializer}
@@ -26,25 +25,21 @@ public class DefaultLicenseSerializerProvider<I extends Serializable>
 		implements Provider<LicenseSerializer<I>> {
 	@Override
 	public LicenseSerializer<I> get() {
-		Converter<I, String> infoToStringConverter = ConverterBuilder
-				.create(new SerializableToBytesConverter<I>())
-				.add(new SaltConverter()).add(new BytesToBase64Converter())
-				.build();
-		Converter<License<I>, String> licenseToStringConverter = ConverterBuilder
-				.create(new SerializableToBytesConverter<License<I>>())
-				.add(new SaltConverter()).add(new BytesToBase64Converter())
-				.build();
-		Converter<String, I> stringToInfoConverter = ConverterBuilder
-				.create(new Base64ToBytesConverter())
-				.add(new UnsaltConverter())
-				.add(new BytesToSerializableConverter<I>()).build();
-		Converter<String, License<I>> stringToLicenseConverter = ConverterBuilder
-				.create(new Base64ToBytesConverter())
-				.add(new UnsaltConverter())
-				.add(new BytesToSerializableConverter<License<I>>()).build();
+		Function<I, String> infoToStringFunction = new SerializableToBytesFunction<I>()
+				.andThen(new SaltFunction())
+				.andThen(new BytesToBase64Function());
+		Function<License<I>, String> licenseToStringFunction = new SerializableToBytesFunction<License<I>>()
+				.andThen(new SaltFunction())
+				.andThen(new BytesToBase64Function());
+		Function<String, I> stringToInfoFunction = new Base64ToBytesFunction()
+				.andThen(new UnsaltFunction())
+				.andThen(new BytesToSerializableFunction<I>());
+		Function<String, License<I>> stringToLicenseFunction = new Base64ToBytesFunction()
+				.andThen(new UnsaltFunction())
+				.andThen(new BytesToSerializableFunction<License<I>>());
 
-		return new ConverterLicenseSerializer<I>(infoToStringConverter,
-				licenseToStringConverter, stringToInfoConverter,
-				stringToLicenseConverter);
+		return new FunctionLicenseSerializer<I>(infoToStringFunction,
+				licenseToStringFunction, stringToInfoFunction,
+				stringToLicenseFunction);
 	}
 }

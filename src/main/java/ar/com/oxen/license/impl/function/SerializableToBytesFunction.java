@@ -1,21 +1,22 @@
-package ar.com.oxen.commons.converter.impl;
+package ar.com.oxen.license.impl.function;
+
+import static java.util.Objects.requireNonNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
-import ar.com.oxen.commons.converter.api.ConversionException;
-import ar.com.oxen.commons.converter.api.Converter;
+import java.util.function.Function;
 
 /**
  * Serializable object to byte array converter.
  */
-public class SerializableToBytesConverter<S extends Serializable> implements
-		Converter<S, byte[]> {
+public class SerializableToBytesFunction<S extends Serializable> implements
+		Function<S, byte[]> {
 	@Override
-	public byte[] convert(S source) {
+	public byte[] apply(S source) {
 		try {
+			requireNonNull(source);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 			oos.writeObject(source);
@@ -25,7 +26,7 @@ public class SerializableToBytesConverter<S extends Serializable> implements
 			bos.close();
 			return result;
 		} catch (IOException e) {
-			throw new ConversionException(e);
+			throw new IllegalArgumentException(e);
 		}
 	}
 }
