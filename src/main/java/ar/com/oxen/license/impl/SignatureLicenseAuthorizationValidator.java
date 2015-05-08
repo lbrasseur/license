@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.util.function.Function;
 
+import ar.com.oxen.license.api.Function;
 import ar.com.oxen.license.api.LicenceException;
 import ar.com.oxen.license.api.License;
 import ar.com.oxen.license.api.LicenseAuthorizationValidator;

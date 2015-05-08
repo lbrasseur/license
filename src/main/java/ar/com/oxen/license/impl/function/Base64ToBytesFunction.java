@@ -1,8 +1,7 @@
 package ar.com.oxen.license.impl.function;
 
 import static java.util.Objects.requireNonNull;
-
-import java.util.function.Function;
+import ar.com.oxen.license.api.Function;
 
 /**
  * Base 64 to byte array converter.

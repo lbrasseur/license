@@ -6,7 +6,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.function.Function;
+
+import ar.com.oxen.license.api.Function;
 
 /**
  * Byte array to Serializable object converter.

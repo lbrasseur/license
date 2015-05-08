@@ -4,7 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.function.Function;
+
+import ar.com.oxen.license.api.Function;
 
 /**
  * Byte array to byte array converter that applies a message digest algorithm.
